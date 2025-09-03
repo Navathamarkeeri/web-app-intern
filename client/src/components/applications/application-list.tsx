@@ -1,3 +1,4 @@
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import type { ApplicationWithDetails } from "@shared/schema";
@@ -61,10 +62,12 @@ export default function ApplicationList({ applications }: ApplicationListProps) 
         <p className="text-muted-foreground mb-6">
           Start applying to internships to see your applications here.
         </p>
-        <Button>
-          <i className="fas fa-search mr-2"></i>
-          Browse Internships
-        </Button>
+        <Link href="/jobs">
+          <Button data-testid="button-browse-internships-empty">
+            <i className="fas fa-search mr-2"></i>
+            Browse Internships
+          </Button>
+        </Link>
       </div>
     );
   }
