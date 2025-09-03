@@ -9,6 +9,7 @@ import Jobs from "@/pages/jobs";
 import Applications from "@/pages/applications";
 import Profile from "@/pages/profile";
 import InternshipDetails from "@/pages/internship-details";
+import ResumeAnalysis from "@/pages/resume-analysis";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 
@@ -23,6 +24,7 @@ function Router() {
           <Route path="/applications" component={Applications} />
           <Route path="/profile" component={Profile} />
           <Route path="/internship/:id" component={InternshipDetails} />
+          <Route path="/resume-analysis/:resumeId" component={ResumeAnalysis} />
           <Route component={NotFound} />
         </Switch>
       </main>

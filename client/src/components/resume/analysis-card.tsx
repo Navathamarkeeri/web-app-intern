@@ -1,3 +1,4 @@
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
@@ -92,10 +93,19 @@ export default function AnalysisCard({ resume }: AnalysisCardProps) {
         )}
       </div>
       
-      <Button className="w-full" data-testid="button-detailed-analysis">
-        <i className="fas fa-eye mr-2"></i>
-        View Detailed Analysis
-      </Button>
+      {resume?.resume?.id ? (
+        <Link href={`/resume-analysis/${resume.resume.id}`}>
+          <Button className="w-full" data-testid="button-detailed-analysis">
+            <i className="fas fa-eye mr-2"></i>
+            View Detailed Analysis
+          </Button>
+        </Link>
+      ) : (
+        <Button className="w-full" disabled data-testid="button-detailed-analysis">
+          <i className="fas fa-eye mr-2"></i>
+          View Detailed Analysis
+        </Button>
+      )}
     </div>
   );
 }
