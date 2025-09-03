@@ -279,7 +279,11 @@ export default function ResumeAnalysis() {
 
               {/* Improvement Suggestions */}
               {analysis.suggestions && analysis.suggestions.length > 0 && (
-                <SuggestionsCard suggestions={analysis.suggestions} />
+                <SuggestionsCard 
+                  suggestions={analysis.suggestions} 
+                  resume={resume} 
+                  analysis={analysis} 
+                />
               )}
             </div>
 

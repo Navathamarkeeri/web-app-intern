@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import ImprovedResumePreview from "@/components/resume/improved-resume-preview";
 
 interface Suggestion {
   type: string;
@@ -12,9 +13,11 @@ interface Suggestion {
 
 interface SuggestionsCardProps {
   suggestions: Suggestion[];
+  resume?: any;
+  analysis?: any;
 }
 
-export default function SuggestionsCard({ suggestions }: SuggestionsCardProps) {
+export default function SuggestionsCard({ suggestions, resume, analysis }: SuggestionsCardProps) {
   const { toast } = useToast();
 
   const handleApplySuggestion = (suggestion: Suggestion, index: number) => {
@@ -115,7 +118,10 @@ export default function SuggestionsCard({ suggestions }: SuggestionsCardProps) {
           ))}
         </div>
         
-        <div className="mt-6 pt-4 border-t border-border">
+        <div className="mt-6 pt-4 border-t border-border space-y-3">
+          {resume && analysis && (
+            <ImprovedResumePreview resume={resume} analysis={analysis} />
+          )}
           <Button 
             variant="outline" 
             className="w-full" 
@@ -123,7 +129,7 @@ export default function SuggestionsCard({ suggestions }: SuggestionsCardProps) {
             data-testid="button-download-improved"
           >
             <i className="fas fa-download mr-2"></i>
-            Download Improved Resume
+            Download Improved Resume (Quick)
           </Button>
         </div>
       </CardContent>
