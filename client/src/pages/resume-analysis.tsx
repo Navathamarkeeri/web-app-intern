@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { useRoute, Link } from "wouter";
+import { useRoute, Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -10,6 +11,8 @@ import SuggestionsCard from "@/components/optimization/suggestions-card";
 
 export default function ResumeAnalysis() {
   const [match, params] = useRoute("/resume-analysis/:resumeId");
+  const [, setLocation] = useLocation();
+  const { toast } = useToast();
   const resumeId = params?.resumeId;
 
   const { data: resume, isLoading: resumeLoading } = useQuery({
@@ -89,6 +92,45 @@ export default function ResumeAnalysis() {
     if (score >= 80) return "bg-green-500";
     if (score >= 60) return "bg-yellow-500";
     return "bg-red-500";
+  };
+
+  const handleDownloadResume = () => {
+    toast({
+      title: "Download Started",
+      description: `Downloading ${resume.fileName}...`,
+    });
+    // In a real app, this would download the actual resume file
+    setTimeout(() => {
+      const link = document.createElement('a');
+      link.href = '#'; // In real app, this would be the actual file URL
+      link.download = resume.fileName;
+      link.click();
+    }, 500);
+  };
+
+  const handleUploadNew = () => {
+    setLocation('/');
+    setTimeout(() => {
+      const uploadSection = document.getElementById('resume-upload-section');
+      uploadSection?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
+
+  const handleShareAnalysis = async () => {
+    const analysisUrl = `${window.location.origin}/resume-analysis/${resumeId}`;
+    
+    try {
+      await navigator.clipboard.writeText(analysisUrl);
+      toast({
+        title: "Analysis Link Copied!",
+        description: "Share this link to let others view your resume analysis results.",
+      });
+    } catch (err) {
+      toast({
+        title: "Share Analysis",
+        description: `Copy this link: ${analysisUrl}`,
+      });
+    }
   };
 
   return (
@@ -266,7 +308,12 @@ export default function ResumeAnalysis() {
                     </span>
                   </div>
                   <Separator />
-                  <Button variant="outline" className="w-full" data-testid="button-download-resume">
+                  <Button 
+                    variant="outline" 
+                    className="w-full" 
+                    onClick={handleDownloadResume}
+                    data-testid="button-download-resume"
+                  >
                     <Download className="w-4 h-4 mr-2" />
                     Download Resume
                   </Button>
@@ -308,11 +355,21 @@ export default function ResumeAnalysis() {
                       Find Matching Jobs
                     </Button>
                   </Link>
-                  <Button variant="outline" className="w-full justify-start" data-testid="button-upload-new">
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start" 
+                    onClick={handleUploadNew}
+                    data-testid="button-upload-new"
+                  >
                     <i className="fas fa-upload mr-2"></i>
                     Upload New Version
                   </Button>
-                  <Button variant="outline" className="w-full justify-start" data-testid="button-share-analysis">
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start" 
+                    onClick={handleShareAnalysis}
+                    data-testid="button-share-analysis"
+                  >
                     <i className="fas fa-share mr-2"></i>
                     Share Analysis
                   </Button>

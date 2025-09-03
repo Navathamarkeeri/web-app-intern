@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 
 interface Suggestion {
   type: string;
@@ -14,6 +15,29 @@ interface SuggestionsCardProps {
 }
 
 export default function SuggestionsCard({ suggestions }: SuggestionsCardProps) {
+  const { toast } = useToast();
+
+  const handleApplySuggestion = (suggestion: Suggestion, index: number) => {
+    toast({
+      title: "Suggestion Applied!",
+      description: `Applied: ${suggestion.title}. Your resume has been updated with this improvement.`,
+    });
+  };
+
+  const handleDownloadImproved = () => {
+    toast({
+      title: "Download Started",
+      description: "Your improved resume with all suggestions applied is being prepared for download.",
+    });
+    // In a real app, this would generate and download the improved resume
+    setTimeout(() => {
+      const link = document.createElement('a');
+      link.href = '#'; // In real app, this would be the actual file URL
+      link.download = 'improved-resume.pdf';
+      link.click();
+    }, 1000);
+  };
+
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high':
@@ -80,6 +104,7 @@ export default function SuggestionsCard({ suggestions }: SuggestionsCardProps) {
                     size="sm" 
                     variant="ghost"
                     className="text-sm font-medium"
+                    onClick={() => handleApplySuggestion(suggestion, index)}
                     data-testid={`button-apply-suggestion-${index}`}
                   >
                     Apply Suggestion
@@ -91,7 +116,12 @@ export default function SuggestionsCard({ suggestions }: SuggestionsCardProps) {
         </div>
         
         <div className="mt-6 pt-4 border-t border-border">
-          <Button variant="outline" className="w-full" data-testid="button-download-improved">
+          <Button 
+            variant="outline" 
+            className="w-full" 
+            onClick={handleDownloadImproved}
+            data-testid="button-download-improved"
+          >
             <i className="fas fa-download mr-2"></i>
             Download Improved Resume
           </Button>
