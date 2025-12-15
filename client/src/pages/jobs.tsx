@@ -6,6 +6,106 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Internship } from "@shared/schema";
 
+// Fallback mock data for when API is unavailable (e.g., Netlify static hosting)
+const MOCK_INTERNSHIPS: Internship[] = [
+  {
+    id: "1",
+    title: "Software Engineering Intern",
+    company: "Microsoft",
+    description: "Join our team to develop scalable web applications using React, Node.js, and Azure cloud services. You'll work on real products used by millions of users worldwide.",
+    location: "Seattle, WA",
+    duration: "3 months",
+    salary: "$6,000/month",
+    requirements: ["Computer Science or related field", "Experience with JavaScript", "Knowledge of React", "Understanding of software development principles"],
+    skills: ["React", "Node.js", "Azure", "TypeScript", "JavaScript", "Git"],
+    industry: "Technology",
+    isRemote: false,
+    companyLogo: "fab fa-microsoft",
+    postedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+    isActive: true,
+  },
+  {
+    id: "2",
+    title: "Data Science Intern",
+    company: "Google",
+    description: "Work with large datasets to derive insights and build machine learning models. Experience with Python, SQL, and TensorFlow preferred.",
+    location: "Mountain View, CA",
+    duration: "3 months",
+    salary: "$7,500/month",
+    requirements: ["Statistics or Computer Science background", "Python proficiency", "SQL knowledge", "Machine learning fundamentals"],
+    skills: ["Python", "SQL", "TensorFlow", "Machine Learning", "Data Analysis", "Statistics"],
+    industry: "Technology",
+    isRemote: false,
+    companyLogo: "fab fa-google",
+    postedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+    isActive: true,
+  },
+  {
+    id: "3",
+    title: "UX Design Intern",
+    company: "Spotify",
+    description: "Design user experiences for our mobile and web platforms. Collaborate with product managers and engineers to create intuitive interfaces.",
+    location: "New York, NY",
+    duration: "4 months",
+    salary: "$5,500/month",
+    requirements: ["Design portfolio", "Figma proficiency", "User research experience", "Basic prototyping skills"],
+    skills: ["Figma", "Sketch", "Prototyping", "User Research", "Design Systems", "Adobe Creative Suite"],
+    industry: "Technology",
+    isRemote: false,
+    companyLogo: "fab fa-spotify",
+    postedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+    isActive: true,
+  },
+  {
+    id: "4",
+    title: "Product Management Intern",
+    company: "Slack",
+    description: "Work with cross-functional teams to define product roadmaps and drive feature development. Great opportunity to learn product strategy.",
+    location: "San Francisco, CA",
+    duration: "3 months",
+    salary: "$6,500/month",
+    requirements: ["Business or technical background", "Analytical thinking", "Communication skills", "Interest in product development"],
+    skills: ["Product Strategy", "Analytics", "Roadmapping", "User Stories", "Market Research", "Agile"],
+    industry: "Technology",
+    isRemote: true,
+    companyLogo: "fab fa-slack",
+    postedAt: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000),
+    isActive: true,
+  },
+  {
+    id: "5",
+    title: "Marketing Analytics Intern",
+    company: "Netflix",
+    description: "Analyze marketing campaigns and user engagement data to optimize marketing strategies and improve user acquisition.",
+    location: "Los Angeles, CA",
+    duration: "4 months",
+    salary: "$5,000/month",
+    requirements: ["Marketing or Analytics background", "Excel proficiency", "SQL knowledge", "Statistical analysis skills"],
+    skills: ["Excel", "SQL", "Google Analytics", "A/B Testing", "Data Visualization", "Marketing"],
+    industry: "Media",
+    isRemote: false,
+    companyLogo: "fab fa-netflix",
+    postedAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
+    isActive: true,
+  },
+  {
+    id: "6",
+    title: "Financial Analyst Intern",
+    company: "Goldman Sachs",
+    description: "Support investment banking teams with financial modeling, market research, and client presentations. Great exposure to finance industry.",
+    location: "New York, NY",
+    duration: "10 weeks",
+    salary: "$8,000/month",
+    requirements: ["Finance or Economics major", "Excel expertise", "Financial modeling knowledge", "Strong analytical skills"],
+    skills: ["Excel", "Financial Modeling", "PowerPoint", "Bloomberg", "VBA", "SQL"],
+    industry: "Finance",
+    isRemote: false,
+    companyLogo: "fas fa-building",
+    postedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+    isActive: true,
+  },
+];
+
 export default function Jobs() {
   const [filters, setFilters] = useState({
     query: "",
@@ -16,31 +116,48 @@ export default function Jobs() {
   const { data: internships, isLoading, error } = useQuery({
     queryKey: ['/api/internships', filters.query, filters.location, filters.industry],
     queryFn: async () => {
-      const params = new URLSearchParams();
-      if (filters.query) params.append('q', filters.query);
-      if (filters.location && filters.location !== 'All Locations') params.append('location', filters.location);
-      if (filters.industry && filters.industry !== 'All Industries') params.append('industry', filters.industry);
-      
-      const response = await fetch(`/api/internships?${params.toString()}`);
-      if (!response.ok) throw new Error('Failed to fetch internships');
-      return response.json() as Promise<Internship[]>;
+      try {
+        const params = new URLSearchParams();
+        if (filters.query) params.append('q', filters.query);
+        if (filters.location && filters.location !== 'All Locations') params.append('location', filters.location);
+        if (filters.industry && filters.industry !== 'All Industries') params.append('industry', filters.industry);
+        
+        const response = await fetch(`/api/internships?${params.toString()}`);
+        if (!response.ok) throw new Error('Failed to fetch internships');
+        return response.json() as Promise<Internship[]>;
+      } catch (err) {
+        // Fallback to mock data if API is unavailable (e.g., Netlify static hosting)
+        console.warn('API unavailable, using mock data:', err);
+        let filtered = MOCK_INTERNSHIPS;
+        
+        // Apply client-side filtering for mock data
+        if (filters.query) {
+          const queryLower = filters.query.toLowerCase();
+          filtered = filtered.filter(internship => 
+            internship.title.toLowerCase().includes(queryLower) ||
+            internship.company.toLowerCase().includes(queryLower) ||
+            internship.description.toLowerCase().includes(queryLower)
+          );
+        }
+        if (filters.location && filters.location !== 'All Locations') {
+          filtered = filtered.filter(internship => 
+            internship.location.toLowerCase().includes(filters.location.toLowerCase())
+          );
+        }
+        if (filters.industry && filters.industry !== 'All Industries') {
+          filtered = filtered.filter(internship => 
+            internship.industry.toLowerCase() === filters.industry.toLowerCase()
+          );
+        }
+        
+        return filtered;
+      }
     },
   });
 
   const handleFilterChange = (newFilters: typeof filters) => {
     setFilters(newFilters);
   };
-
-  if (error) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-destructive mb-4">Error Loading Internships</h2>
-          <p className="text-muted-foreground">Please try again later or contact support if the problem persists.</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="py-16 bg-muted/30 min-h-screen" data-testid="page-jobs">
