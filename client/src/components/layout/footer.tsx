@@ -27,18 +27,18 @@ export default function Footer() {
           <div>
             <h6 className="font-semibold text-foreground mb-4">Platform</h6>
             <ul className="space-y-2 text-muted-foreground">
-              <li><a href="#" className="hover:text-primary" data-testid="link-browse-internships">Browse Internships</a></li>
-              <li><a href="#" className="hover:text-primary" data-testid="link-resume-analysis">Resume Analysis</a></li>
-              <li><a href="#" className="hover:text-primary" data-testid="link-application-tracking">Application Tracking</a></li>
-              <li><a href="#" className="hover:text-primary" data-testid="link-career-resources">Career Resources</a></li>
+              <li><a href="/jobs" className="hover:text-primary" data-testid="link-browse-internships">Browse Internships</a></li>
+              <li><a href="/features" className="hover:text-primary" data-testid="link-resume-analysis">Features</a></li>
+              <li><a href="/applications" className="hover:text-primary" data-testid="link-application-tracking">Application Tracking</a></li>
+              <li><a href="/pricing" className="hover:text-primary" data-testid="link-career-resources">Pricing</a></li>
             </ul>
           </div>
           
           <div>
             <h6 className="font-semibold text-foreground mb-4">Support</h6>
             <ul className="space-y-2 text-muted-foreground">
-              <li><a href="#" className="hover:text-primary" data-testid="link-help-center">Help Center</a></li>
-              <li><a href="#" className="hover:text-primary" data-testid="link-contact">Contact Us</a></li>
+              <li><a href="/faq" className="hover:text-primary" data-testid="link-help-center">Help Center</a></li>
+              <li><a href="/contact" className="hover:text-primary" data-testid="link-contact">Contact Us</a></li>
               <li><a href="#" className="hover:text-primary" data-testid="link-privacy">Privacy Policy</a></li>
               <li><a href="#" className="hover:text-primary" data-testid="link-terms">Terms of Service</a></li>
             </ul>

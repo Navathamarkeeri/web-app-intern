@@ -5,9 +5,11 @@ export default function Header() {
   const [location] = useLocation();
 
   const navItems = [
-    { href: "/", label: "Dashboard", active: location === "/" },
-    { href: "/jobs", label: "Browse Jobs", active: location === "/jobs" },
-    { href: "/applications", label: "Applications", active: location === "/applications" },
+    { href: "/", label: "Home", active: location === "/" },
+    { href: "/features", label: "Features", active: location === "/features" },
+    { href: "/pricing", label: "Pricing", active: location === "/pricing" },
+    { href: "/jobs", label: "Jobs", active: location === "/jobs" },
+    { href: "/about", label: "About", active: location === "/about" },
   ];
 
   return (
@@ -42,6 +44,12 @@ export default function Header() {
               <Button data-testid="button-profile">
                 <i className="fas fa-user mr-2"></i>
                 Profile
+              </Button>
+            </Link>
+            <Link href="/contact">
+              <Button variant="outline">
+                <i className="fas fa-paper-plane mr-2"></i>
+                Contact
               </Button>
             </Link>
           </div>

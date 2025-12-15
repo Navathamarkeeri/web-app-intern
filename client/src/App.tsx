@@ -10,6 +10,16 @@ import Applications from "@/pages/applications";
 import Profile from "@/pages/profile";
 import InternshipDetails from "@/pages/internship-details";
 import ResumeAnalysis from "@/pages/resume-analysis";
+import Features from "@/pages/features";
+import Pricing from "@/pages/pricing";
+import About from "@/pages/about";
+import Roadmap from "@/pages/roadmap";
+import Contact from "@/pages/contact";
+import FAQ from "@/pages/faq";
+import StudentDashboard from "@/pages/dashboard-student";
+import EmployerDashboard from "@/pages/dashboard-employer";
+import UniversityDashboard from "@/pages/dashboard-university";
+import Referral from "@/pages/referral";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 
@@ -25,6 +35,16 @@ function Router() {
           <Route path="/profile" component={Profile} />
           <Route path="/internship/:id" component={InternshipDetails} />
           <Route path="/resume-analysis/:resumeId" component={ResumeAnalysis} />
+          <Route path="/features" component={Features} />
+          <Route path="/pricing" component={Pricing} />
+          <Route path="/about" component={About} />
+          <Route path="/roadmap" component={Roadmap} />
+          <Route path="/contact" component={Contact} />
+          <Route path="/faq" component={FAQ} />
+          <Route path="/demo/student" component={StudentDashboard} />
+          <Route path="/demo/employer" component={EmployerDashboard} />
+          <Route path="/demo/university" component={UniversityDashboard} />
+          <Route path="/referral" component={Referral} />
           <Route component={NotFound} />
         </Switch>
       </main>
